@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.modal-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+
+    /* Initial width */
+    width: 80%;
+    max-width: 80%;
+
+    /* Media query for larger screens */
+    @media (min-width: 768px) {
+        /* Adjusted width for larger screens */
+        max-width: 500px;
+    }
+}
+
+
+.landscape-image {
+    object-fit: none; /* or any other desired value */
+}
