@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 function OrderManagement() {
     // Hardcoded orders data
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const isUnderDevelopment = true;
 
     const orders = [
         {
@@ -71,6 +72,7 @@ function OrderManagement() {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-4">Order Management</h2>
+
             <table className="w-full border-collapse border border-gray-400">
                 <thead>
                 <tr className="bg-gray-200">
@@ -147,6 +149,7 @@ function OrderManagement() {
                     </div>
                 </div>
             )}
+
 
         </div>
     );

@@ -21,4 +21,10 @@ router.put('/profile', authMiddleware, userController.updateUserProfile);
 // Route for updating user password
 router.put('/password', authMiddleware, userController.updateUserPassword);
 
+// Route for updating user role
+router.put('/users/:userId/role', authMiddleware, userController.updateUserRole);
+
+// Route for deleting a user
+router.delete('/users/:userId', authMiddleware, userController.deleteUser);
+
 export default router;

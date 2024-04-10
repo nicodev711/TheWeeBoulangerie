@@ -46,11 +46,20 @@ function ProductsPage() {
             <p className="mt-4 text-lg text-center">Explore our range of breads, pastries, and more.</p>
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 {products.map((product) => (
-                    <div key={product.id} className="bg-white rounded-lg shadow p-6 cursor-pointer" onClick={() => handleProductClick(product)}>
-                        <img src={product.imageUrl} alt={product.name} className="w-full h-64 object-cover rounded-lg" />
+                    <div key={product._id} className="bg-white rounded-lg shadow p-6 cursor-pointer" onClick={() => handleProductClick(product)}>
+                        {product.available ? (
+                            <img src={product.imageUrl} alt={product.name} className="w-full h-64 object-cover rounded-lg" />
+                        ) : (
+                            <div className="relative w-full h-64">
+                                <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover rounded-lg" />
+                                <div className="absolute inset-0 flex items-center justify-center text-white text-2xl bg-black bg-opacity-50">
+                                    Not Available
+                                </div>
+                            </div>
+                        )}
                         <h3 className="text-xl font-bold mt-2">{product.name}</h3>
                         <p className="text-md mt-1">{product.description}</p>
-                        <p className="text-lg font-semibold mt-2">${product.price}</p>
+                        <p className="text-lg font-semibold mt-2">£ {product.price}</p>
                     </div>
                 ))}
             </div>
@@ -62,7 +71,7 @@ function ProductsPage() {
                         <h2 className="text-2xl font-bold">{selectedProduct.name}</h2>
                         <img src={selectedProduct.imageUrl} alt={selectedProduct.name} className="w-full h-64 object-cover rounded-lg mt-4" />
                         <p className="mt-2">{selectedProduct.description}</p>
-                        <p className="mt-2 text-lg font-semibold">${selectedProduct.price}</p>
+                        <p className="mt-2 text-lg font-semibold">£ {selectedProduct.price}</p>
                         <button className="mt-4 bg-red-500 text-white py-2 px-4 rounded" onClick={() => setIsModalOpen(false)}>Close</button>
                     </div>
                 </div>

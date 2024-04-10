@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheck, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 function ProductManagement() {
     const [products, setProducts] = useState([]); // Store fetched products
@@ -125,41 +127,59 @@ function ProductManagement() {
         }
     };
 
-    // Function to handle file upload
     const handleFileUpload = async (file) => {
         try {
             const reader = new FileReader();
             reader.onload = async (event) => {
-                // Convert the uploaded file to a blob
                 const blob = new Blob([event.target.result], { type: file.type });
-                // Create a new FormData object
                 const formData = new FormData();
-                // Append the blob data to the FormData object
                 formData.append('image', blob, file.name);
-                // Send a POST request to the server to save the image
                 const response = await fetch(`${apiUrl}/upload/upload`, {
                     method: 'POST',
                     body: formData,
                 });
                 if (response.ok) {
-                    // Image uploaded successfully, retrieve the URL from the response
                     const data = await response.json();
-                    // Update the imageUrl state with the retrieved URL
                     setImageUrl(data.url);
                 } else {
                     console.error('Failed to upload image');
                 }
             };
-            // Read the uploaded file as a data URL
             reader.readAsArrayBuffer(file);
         } catch (error) {
             console.error('Error uploading image:', error);
         }
     };
 
+    // Function to toggle the availability of a product
+    const toggleAvailability = async (id, currentAvailable) => {
+        try {
+            const response = await fetch(`${apiUrl}/products/products/${id}/availability`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ available: !currentAvailable })
+            });
 
+            if (!response.ok) {
+                throw new Error('Failed to update availability');
+            }
 
+            // Assuming the response contains the updated product
+            const updatedProduct = await response.json();
 
+            // Update the local state with the updated product
+            setProducts(products.map(product => {
+                if (product._id === updatedProduct._id) {
+                    return updatedProduct;
+                }
+                return product;
+            }));
+        } catch (error) {
+            console.error('Error toggling availability:', error);
+        }
+    };
     return (
         <div>
             <h2 className="text-3xl font-bold mb-4">Manage Products</h2>
@@ -170,12 +190,19 @@ function ProductManagement() {
             </button>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {products.map((product) => (
-                    <div key={product._id} className="p-4 border rounded shadow"> {/* Ensure each key is unique */}
-                        <img src={product.imageUrl} alt={product.name} className="w-full h-32 object-cover rounded mb-4" />
-                        <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-                        <p className="mb-2">{product.description}</p>
-                        <p className="mb-4">${product.price}</p>
-                        <div className="flex justify-between">
+                    <div key={product._id} className="bg-white rounded-lg shadow p-6 cursor-pointer">
+                        <img src={product.imageUrl} alt={product.name} className="w-full h-64 object-cover rounded-lg"/>
+                        <h3 className="text-xl font-bold mt-2">
+                            {product.name}
+                            <span onClick={() => toggleAvailability(product._id, product.available)}
+                                  className="ml-2 cursor-pointer">
+                    {product.available ? <FontAwesomeIcon icon={faCheck} className="text-brown-500"/> :
+                        <FontAwesomeIcon icon={faTimes} className="text-red-500"/>}
+                </span>
+                        </h3>
+                        <p className="text-md mt-1">{product.description}</p>
+                        <p className="text-lg font-semibold mt-2">£ {product.price}</p>
+                        <div className="flex justify-between mt-4">
                             <button onClick={() => handleEdit(product._id)}
                                     className="px-4 py-2 bg-boulangerie-main text-white rounded hover:bg-boulangerie-main-hover">Edit
                             </button>
@@ -185,8 +212,8 @@ function ProductManagement() {
                         </div>
                     </div>
                 ))}
-
             </div>
+
 
             {/* Modal */}
             {showModal && (

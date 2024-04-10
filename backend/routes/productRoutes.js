@@ -15,6 +15,9 @@ router.get('/products/:id', productController.getProductById);
 // Route to update a product by ID
 router.put('/products/:id', productController.updateProduct);
 
+// Route to update product availability by ID
+router.put('/products/:id/availability', productController.updateProductAvailability);
+
 // Route to delete a product by ID
 router.delete('/products/:id', productController.deleteProduct);
 

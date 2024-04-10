@@ -7,6 +7,7 @@ import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import hoursRoutes from './routes/hoursRoutes.js';
+import newsRoutes from "./routes/newsRoutes.js";
 import {dirname, join} from "path";
 import {fileURLToPath} from "url";
 
@@ -36,6 +37,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/uploads', express.static(join(__dirname, './uploads')));
 app.use('/api/hours', hoursRoutes);
+app.use('/api/news', newsRoutes);
 
 
 // Middleware for handling non-existing routes

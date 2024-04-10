@@ -15,6 +15,10 @@ function NavBar() {
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
+    const handleLinkClick = () => {
+        setIsDropdownOpen(false); // Close the dropdown when a link is clicked
+    };
+
     return (<nav className="bg-boulangerie-main p-4 shadow-md">
             <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
                 {/* Logo on the left */}
@@ -56,18 +60,27 @@ function NavBar() {
                             className="ml-2 transform transition-transform duration-200"
                         />
                     </button>
-                    {isDropdownOpen && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                            <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Update
-                                Profile</Link>
-                            {user.role === 'admin' && (<Link to="/admin"
-                                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin</Link>)}
-                            <button onClick={handleLogout}
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout
-                            </button>
-                        </div>)}
-                </div>) : (<NavLink to="/login"
-                                    className="text-white hover:text-gray-200 transition-colors duration-300">Login</NavLink>)}
+                        {isDropdownOpen && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                <Link to="/profile" onClick={handleLinkClick} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Update Profile
+                                </Link>
+                                {user.role === 'admin' && (
+                                    <Link to="/admin" onClick={handleLinkClick} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Admin
+                                    </Link>
+                                )}
+                                <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Logout
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <NavLink to="/login" className="text-white hover:text-gray-200 transition-colors duration-300">
+                        Login
+                    </NavLink>
+                )}
             </div>
     </nav>);
 }
